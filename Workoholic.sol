@@ -46,10 +46,10 @@ contract Workoholic is ERC721Enumerable, Ownable {
     require(supply + _mintAmount <= maxSupply, "max NFT limit exceeded");
 
     if (msg.sender != owner()) {
+       uint256 ownerMintedCount = addressMintedBalance[msg.sender];
+       require(ownerMintedCount + _mintAmount <= nftPerAddressLimit, "max NFT per address exceeded");
         if(onlyWhitelisted == true) {
             require(isWhitelisted(msg.sender), "user is not whitelisted");
-            uint256 ownerMintedCount = addressMintedBalance[msg.sender];
-            require(ownerMintedCount + _mintAmount <= nftPerAddressLimit, "max NFT per address exceeded");
         }
         require(msg.value >= cost * _mintAmount, "insufficient funds");
     }
